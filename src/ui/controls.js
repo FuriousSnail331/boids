@@ -1,5 +1,6 @@
 class Controls {
   constructor() {
+    this.paused = false;
     this.vectorsEnabled = false;
     this.simulationSpeed = 1;
     this.maxSpeed = CONFIG.maxSpeed;
@@ -10,11 +11,14 @@ class Controls {
 
     this.gui = new lil.GUI({ title: "Controls" });
     this.createUI();
+    this.addListeners();
 
     this.startFPSCounter();
   }
 
   createUI() {
+    this.gui.add(this, "paused").name("Pause").listen();
+
     this.gui.add(this, "vectorsEnabled").name("Show Vectors");
 
     this.gui
@@ -36,6 +40,15 @@ class Controls {
     this.gui.add(this, "fps").name("FPS").listen();
   }
 
+  addListeners() {
+    window.addEventListener("keydown", (event) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        this.togglePause();
+      }
+    });
+
+  }
   startFPSCounter() {
     setInterval(() => {
       const now = performance.now();
@@ -57,5 +70,13 @@ class Controls {
 
   getSpeed() {
     return this.simulationSpeed;
+  }
+
+  isPaused() {
+    return this.paused;
+  }
+
+  togglePause() {
+    return (this.paused = !this.paused);
   }
 }

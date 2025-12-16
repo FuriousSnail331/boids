@@ -16,9 +16,11 @@ const renderer = new CanvasRenderer(canvas, flock);
 const controls = new Controls();
 
 function loop() {
-  const speed = controls.getSpeed();
-  for (let i = 0; i < Math.ceil(speed); i++) {
-    sim.step();
+  if (!controls.isPaused()) {
+    const speed = controls.getSpeed();
+    for (let i = 0; i < Math.ceil(speed); i++) {
+      sim.step();
+    }
   }
   renderer.render(controls);
   controls.updateFrame();
